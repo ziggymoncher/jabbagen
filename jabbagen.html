@@ -1,0 +1,356 @@
+<html>
+	<head>
+		<style>
+			body {font-family: Arial; background-color: black; color: khaki;}
+			input {color: blue; box-shadow: 2px 2px 5px purple;}
+			button {color: blue; box-shadow: 2px 2px 5px purple;}
+		</style>
+		<title>Jabba Paragraph Generator V1</title>
+	</head>
+	<body>
+		<div style="width: 70%; margin: auto; padding: 5px; background-color: darkblue; text-align: center;">
+			<small>By Ziggy</small><br>
+			<h1>Jabbarator V1</h1><br>
+			This is a tool you can use to generate Jabba Saulute  paragraphs. This project is now discontinued.<br><br>
+			Length: <input type="number" id="sentenceid" value=25></input><button onclick="generate();">Generate</button>
+			<p id="out"><i>The text will be generated here...</i></p>
+		</div>
+		<script>
+		
+			// *** ARRAYS ***
+		
+			var j_onset = 
+			[
+			"David Egan", "Onute", "seamus", "caillou", "muslims", "Santiago Mijares", "ROMPhonix", "The Phone Community",
+			"BonziWORLD", "OnuteWORLD", "BonziWORLD FE", "Thonkbot", "YTPMV", "pitch black muslims", "protegent",
+			"Samsung", "Samsung Fun Club", "Samsung Fun Club logo", "Leapster", "Nokia", "Huawei", "Fun Club", "ass", "This server", "Commercial",
+			"Eseses", "Ziggymoncher", "Seamusmario", "Jy", "Thog", "TheKantapapa", "SgtPepperArc360", "SgtDiscordWorld", "SgtDanielArc", "Daniel",
+			"IP address", "ISP Provider", "DNS Server", "the hacker", "Ashkenazi jew","Javascript","Kiddie","BonziBOT","Flood","Behh","Bonzi","Peedy","Microsoft",
+			"IP", "LOIC", "CollabVM","Israel", "Palestine", "Lithuania", "Gineikiai", "78.63.40.199", "Crypt", "PBS", "Viacom", "Klasky Csupo", "Klasku Opusc",
+			"Onute Saulute", "ItzUltraScout", "Itzcrazyscout", "IUS", "Danielius Paulavicius", "The CIA", "Bitches", "Itzcrazynil minecraft channel",
+			"Socket.io", "BonziWORLD Exploit Wiki", "monkeys", "gorilla", "orangutan", "Spider", "Alex9", "Ziggy", "ItzChris", "CrazyMediusScout", "Seamus Cremeens", "thonkbitch",
+			"Doggis", "onutemaster777", "Internets", "CIA", "FBI", "Kevonz", "windoubt", "Tyler", "jewish gaming 69", "seamuss", "IUS", "ItzUltraScout's Alt", "alt", "creemins",
+			"ze cube", "cube", "cubeboi", "bluefong", "BonziWORLD Revived", "Kendrick", "BonziVERSE", "BWR+", "Bonzi.ga", "Fune", "Funy", "Fune 201", "jewish gameing 69", "jew", "Hooligans", "BDC", "GBS", "rious", "KKK", "Ku Klux Klan", "Cosmic", "Cosmic Xploitz", "Cosmic XE", "Windows 95", "Windows 98", "windows xp", "Vista", "windows Seven",
+			"Mario", "Luigi", "Princes peach", "bowser", "TOADE", "Daisy", "inkling", "Smash bros", "Bluepanel", "Sonic's schoolhouse"
+			
+			];
+			var j_pronouns = ["he", "she", "it", "they", "I", "you", "we", "me", "u", "i'm", "im", "your", "ur", "you're"]
+			var j_pronouns_verb = ["him", "her", "it", "them", "me", "you", "us", "u"]
+			var j_is = 
+			[
+			"be is", "be are", "be the", "be of is", "be of are", "be of the",
+			"is", "are", "are the", "are is", "the", "is are", "is be", "be", "is such a",
+			"are such a", "be such a", "be so", "is so","is so such a",
+			"be is not", "will not be", "can be", "can't be the", "will be the",
+			"will never be", "is never", "is always", "be always such", "can be all he wants like he is",
+			"must have been", "could is be", "have is", "can be random but may is be a", "is her. she is",
+			"is NEVER", "can not always be so", "is SOOOOO", "is a alt of", "MORE LIKE", "more fucking like",
+			"will be more of the like", "isn't", "aren't", "is REALLY", "will may be", "will is", "will is not"
+			];
+			var j_is_onlyis = 
+			[
+			"be is", "be are", "be the", "be of is", "be of are", "be of the",
+			"is", "are", "are the", "are is", "the", "is are", "is be", "be", "is such a",
+			"are such a", "be such a", "be so", "is so","is so such a",
+			"can be", "will be the","is always", "be always such", "be a", "is SOOOOO","is REALLY"
+			];
+			var j_insult = 
+			[
+			"fucker", "hooligan", "hippo", "pedo", "pitch black muslim", "bad", "motherbitcher", "nigger", "faggot",
+			"bitch", "vitch", "asshole", "motherfucker", "monster", "dragon", "man", "woman", "kike", "ass", "asscheek",
+			"fatass","larpass","bitchass","niggerass","fuckass","shitass","jabba","good","best", "LOIC Ram","very terrible",
+			"evil fucker", "ddoser", "CollabVM moderator", "larpers", "beach", "the rat", "dog", "cone", "Eseses alt", "thog alt",
+			"david egan hater", "dislikes on videos","raper","kiddie","BonziWORLDer","Behh","flood","BonziBITCH","homosexual","transexual",
+			"transgender", "bi", "monkey", "Viacom jumpscare", "Cloudflare 502 Gateway error", "script kiddie", "homophobic","transphobic",
+			"never to the end", "bitch that eat watermelon mozarella", "router", "modem", "link", "html", "JavaScript", "Index.js",
+			"monkeys", "gorilla", "orangutan", "Spider", "gelatin's butt", "insulted", "David Egan", "child molesting", "assass", "armstrong cable",
+			"rex", "t-rex", "Server of the time", "super idol", "MESSAGE OF THE SONG", "just location", "rapester", "dildo", "dildofucker", "NIGGGGGGER!!!!",
+			"9/11"
+			
+			];
+			var j_adjective = ["fucking","bitching","motherfucking","super","super duper","ultra","omega","niggering","assbitching","super motherfucking","fuckingassing","not", "NEVER", "always","raping"];
+			var j_grounded_unit = 
+			[
+			"nanoseconds", "microseconds","milliseconds","seconds","minutes","hours","years","decades","centuries",
+			"infinities","bans","groundings","kilograms","grams","meters","kilometers","centimeters","millimeters",
+			"nanometers","times","never end of a time","inches","crazyplex","googol plex","eternities", "schools",
+			"bans","servers","fists in ass"
+			];
+			var j_punct = [".","?","!","...","!!!", "!!!!!", "!!!!!!!!!!!", "???", "?!", ".."];
+			var j_phrase =
+			[
+			"Enough. I had the enough.",
+			"You guys are the evil.",
+			"I fuck your pants.",
+			"FUCKING SHITFUCKASS A BITCH!!!",
+			"Oh my freaking god!",
+			"Stop calling me a jabba!",
+			"I shut down the servers.",
+			"You can take words and use random to say it like kiddies.",
+			"David Egan is no good for everyone, and me.",
+			"The witches shut down the router when i used LOIC on bad users.",
+			"Enough!",
+			"That's it.",
+			"Do I have to say that",
+			"Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh Oh!",
+			"Oh Oh Oh Oh Oh Oh!",
+			"FUCK YOU BITCHASS FUCK!!!!!!!!",
+			"He say:",
+			"It said:",
+			"Now it goes:",
+			"WHAT A BAD!",
+			"Such an evil.",
+			"bitching can bitch.",
+			"Why hello.",
+			"BAD USER!",
+			"Good user",
+			"I Quit forever?",
+			"GO INTO ZIGGY!!!!!!!!!!!!!!!!",
+			"NO MORE I ARE AM THE FUCKING DONE WITH YOU ALL!",
+			"You are fucking asshole and"
+			];
+			var j_preonset =
+			[
+			"So","The","This","That", "Or is","If","Why","What if", "That if", "Why is","Because why? Because", "Because"
+			];
+			var j_verb = 
+			[
+			"finds", "found", "will find",
+			"grounds", "grounded", "will ground",
+			"kills", "killed", "will kill",
+			"ddoses", "ddosed", "will ddos",
+			"rape", "raped", "will rape",
+			"dances out of", "danced out of", "will dance",
+			"dislikes", "disliked", "will dislike",
+			"appear", "hunt for ip of", "leaked ip address of",
+			"ban", "banned", "will ban", "flood", "flooded",
+			"muted", "mutes", "spams", "calls an asshole the",
+			"end the life of", "shuts down", "hack", "hacked", "will hack",
+			"can hack", "fucks", "fucked", "fuckered", "died because of",
+			"eats", "eat", "will eat", "electrocutes", "had 502 error due to the",
+			"glows in the dark like", "terminates", "terminated", "will terminate",
+			"eats", "godmodes", "goes to", "went to", "go to", "go of",
+			"rapes", "dildos", "fists", "reds", "bleeds", "bleeded", "sended too many attacks on", 
+			"shutted downed", "created", "uncreates", "generates", "endorses", "infomaniacs",
+			"superbanned", "shutted down because of", "must die because of", "grounded for life the", "plays",
+			"makes video out of", "makes the grounding out of a", "inserts self into", "ddoseds", "had has enough of",
+			"embraces", "do", "did"
+			];
+			
+			var j_verb_ord = 
+			[
+			"find", "ground", "ddos", "dox", "leak ip address of",
+			"rape", "eat", "dislike", "like", "appear", "hunt for ip of",
+			"ban", "flood", "flooded", "mute", "spam", "call jabba for",
+			"end the life of", "shut down", "hack", "hack", "fuck", "die",
+			"eat", "terminate", "get terminated", "red", "slay faggot", "find heater's", "mock",
+			"generate", "ungenerate", "delete", "add", "oo", "grounde"
+			];
+			
+			var j_ground = ["grounded", "ground", "groundings", "grounde"];
+			
+			var j_conjoin = [
+			"also", "but", "because", "cause", "and reason is", 
+			"and", "but then", "and what if", "also it say that", 
+			"and I find out that", "and you find that", "and it say this:", 
+			"he says this:", "say the following:", "the truth of him is", "maybe", "if only", "perhaps",
+			"or", "between", "underestimatingly", "AND", "ALSO", "OR", "WHAT IF"
+			]
+			
+			var j_randomwords = 
+			[
+			"beach", "ball", "sphere", "circle", "round", "ellipsoid", "square", "rectangle", "cube", "box", "dildo", "boner", "penis", "dick",
+			"roll", "cheese", "milk", "frame", "window", "door", "ribcage", "skull", "japans", "mozarella", "poop", "anus", "execution", "diddle",
+			"sock", "brain", "poop brain", "bone", "spinal cord", "blast", "poop", "turd", "camera", "david", "loic", "hoic", "chinas", "germanys", "shit", "poop",
+			"logic", "eminem", "BFDI", "BFB", "Four from BFB", "man", "woman", "dickface", "manchild", "doggis", "moic", "soic", "oic", "Samus", "yoshi"
+			];
+			
+			var j_randconjoin = 
+			[
+			"in", "inside", "become", "and", "of", "of the", "of a", "outside of", "and you are", "is", "forever", "eats"
+			];
+			
+			var j_place = 
+			[
+			"China", "Russian", "lithuania", "German", "USA", "North Pole", "indian", "Canada", "south pole", "Mars", "Sun", "Gineikiai, Silale raj, Lietuva", "space", "Moon", "BonziWORLD", "CollabVM", "Windows 93", "BonziWORLD: Revived", "OnuteWORLD", "Earth", "Jupiter", "Uranus", "Saturn", "poland", "Portugal", "norway", "Arabic", "KFC Africa", "israel", "Palestine", "me house", "your address", "IP origin", "his cock", "Potato fields"
+			];
+			
+			// *** ADD FUNCTIONS ***
+			
+			function TestAdd(){
+				out += "If this doesn't generate when needed, i fucked up with the code. Sorry..."
+			}
+		
+			function AddWord(stringd, space) {
+				out += stringd;
+				if (space==1){
+				out += " ";
+				}
+			}
+			
+			function AddWordChance(stringd, space, onein) {
+			    if (Math.floor(Math.random()*onein)==1){
+				out += stringd;
+				}
+				if (space==1){
+				out += " ";
+				}
+			}
+		
+			function AddRandCertain(wordlist, space) {
+				out += wordlist[Math.floor(Math.random()*wordlist.length)];
+				if (space==1){
+				out += " ";
+				}
+			}
+			function AddRandChance(wordlist, space, onein) {
+			    if (Math.floor(Math.random()*onein)==1){
+				out += wordlist[Math.floor(Math.random()*wordlist.length)];
+				}
+				if (space==1){
+				out += " ";
+				}
+			}
+			function AddRandTwoIf(wordlista, wordlistb, space) {
+				if (Math.floor(Math.random()*2)==1){
+				out += wordlista[Math.floor(Math.random()*wordlista.length)];
+				}
+				else{
+				out += wordlistb[Math.floor(Math.random()*wordlistb.length)];
+				}
+				if (space==1){
+				out += " ";
+				}
+			}
+			
+			// *** METAFUNCTIONS ***
+			
+			function MetafunctionGrounded(){
+			
+				AddRandTwoIf(j_onset, j_pronouns, 1);
+				AddRandCertain(j_is_onlyis, 1);
+				AddRandChance(j_adjective, 1, 3);
+				AddRandChance(j_adjective, 1, 3);
+				for(x = 0; x < Math.floor(Math.random()*8+1); x++)
+				{
+					AddRandCertain(j_ground, 1);
+				}
+				AddWord("for", 1);
+				for(x = 0; x < Math.floor(Math.random()*7)+2; x++)
+				{
+					AddWord(String(Math.floor(Math.random()*999), 0));
+				}
+				AddWord("", 1);
+				AddRandCertain(j_grounded_unit, 0);
+				AddWord("!!!", 1);
+				
+			
+			}
+			
+			function MetafunctionRandom(){
+			
+				if (Math.floor(Math.random()*4)==1){
+					AddWord("", 1);
+					for(x = 0; x < Math.floor(Math.random()*4)+1; x++)
+					{
+						AddRandTwoIf(j_randomwords, j_randconjoin, 1);
+					}
+					AddRandCertain(j_randomwords, 0);
+				}
+			}
+			
+			
+			function MetafunctionSentence(){
+				AddRandChance(j_preonset, 1, 4);
+				AddRandTwoIf(j_onset, j_pronouns, 1);
+				
+				
+				
+				if(Math.floor(Math.random()*10)+1 <=5){
+					AddRandCertain(j_is, 1);
+					AddRandChance(j_adjective, 1, 3);
+					AddRandCertain(j_insult, 0);
+				}
+				else{
+					AddRandChance(j_adjective, 1, 6);
+					AddRandCertain(j_verb, 1);
+					AddRandChance(j_adjective, 1, 6);
+					AddRandTwoIf(j_onset, j_pronouns_verb, 0);
+				}
+				
+				if(Math.floor(Math.random()*20)+1 <10){
+					AddWord("",1)
+					AddRandCertain(j_conjoin, 1);
+					AddRandTwoIf(j_onset, j_pronouns, 1);
+					if(Math.floor(Math.random()*10)+1 <=5){
+						AddRandCertain(j_is, 1);
+						AddRandChance(j_adjective, 1, 3);
+						AddRandCertain(j_insult, 0);
+					
+					}
+					else{
+						AddRandChance(j_adjective, 1, 6);
+						AddRandCertain(j_verb, 1);
+						AddRandChance(j_adjective, 1, 6);
+						AddRandTwoIf(j_onset, j_pronouns_verb, 0);
+						AddWordChance("kiko", 0, 9);
+					}
+					MetafunctionRandom();
+				}
+				else{
+					MetafunctionRandom();
+				}
+				//end sentence with punctuation
+				AddRandCertain(j_punct, 1);
+			}
+			
+			function MetafunctionOrder(){
+				if (Math.floor(Math.random()*3)==1){
+					AddWordChance("Go", 1, 2)
+					AddRandCertain(j_verb_ord, 1);
+					AddRandChance(j_adjective, 1, 3);
+					AddRandTwoIf(j_onset, j_randomwords, 0);
+				}
+				else {
+					AddWord("Go", 1);
+					AddWord ("to",1);
+					AddRandChance(j_adjective, 1, 3);
+					AddRandCertain (j_place, 0)
+				}
+				if (Math.floor(Math.random()*3)==2){
+						AddWord("",1)
+						AddWord("you", 1);
+						AddRandChance(j_adjective, 1, 3);
+						AddRandCertain(j_randomwords, 0);	
+				}
+				AddRandCertain(j_punct, 1);
+				
+			}
+			
+			// *** GENERATION ***
+			
+			var out = String("");
+			function generate(){
+			out = ""
+			for(i=0; i<=document.getElementById("sentenceid").value; i++){
+				if(Math.floor(Math.random()*20)+1 <7){
+				AddRandCertain(j_phrase, 1);
+				}
+				else if(Math.floor(Math.random()*10)+1 ==7){
+				MetafunctionGrounded();
+				}
+				else if(Math.floor(Math.random()*10)+1>7){
+				MetafunctionOrder();
+				}
+				else{
+				MetafunctionSentence();
+				}
+			}
+			document.getElementById("out").innerHTML = out;
+			console.log(out);
+			}
+			
+		</script>
+		
+	</body>
+</html>
